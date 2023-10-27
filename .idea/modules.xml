@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/symfony_mailer.iml" filepath="$PROJECT_DIR$/.idea/symfony_mailer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/mailer_service_exemple.iml" filepath="$PROJECT_DIR$/.idea/mailer_service_exemple.iml" />
     </modules>
   </component>
 </project>

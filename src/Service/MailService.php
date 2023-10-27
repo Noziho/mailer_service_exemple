@@ -33,7 +33,7 @@ class MailService
             ->htmlTemplate($template)
             ->context($context)
         ;
-
+        sleep(10);
         $this->mailer->send($email);
 
     }
