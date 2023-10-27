@@ -3,40 +3,28 @@
 namespace App\Controller;
 
 use App\Form\ContactType;
-use App\Service\MailService;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use App\Message\ContactMessage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Address;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ContactController extends AbstractController
 {
     #[Route('/', name: 'app_contact')]
-    public function index(Request $request, MailService $mailer): Response
+    public function index(Request $request, MessageBusInterface $messageBus): Response
     {
         $form = $this->createForm(ContactType::class);
         $form->handleRequest($request);
-        $data = $form->getData();
         if ($form->isSubmitted() && $form->isValid()) {
-            //Envoi mail
-            try {
-                $mailer->sendMail
-                (
-                    $data['email'],
-                    $data['subject'],
-                    'email/_contact.html.twig',
-                    [
-                        'userName' => $data['fullName'],
-                        "message" => $data['message'],
-                    ]);
-                $this->addFlash('success', 'Votre demande de contact à bien été envoyer');
-            } catch (TransportExceptionInterface $e) {
-                $this->addFlash('error', 'Erreur dans l\'envoi du mail');
-            }
+            $data = $form->getData();
+            $messageBus->dispatch(new ContactMessage(
+                $data['email'],
+                $data['Message'],
+                $data['subject'],
+                $data['fullName'],
+            ));
         }
 
         return $this->render('contact/index.html.twig', [

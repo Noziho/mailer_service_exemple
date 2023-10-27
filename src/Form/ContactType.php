@@ -23,8 +23,8 @@ class ContactType extends AbstractType
             ->add('subject', TextType::class, [
                 'label' => 'Subject: '
             ])
-            ->add('message', TextareaType::class, [
-                'label' => 'Your message',
+            ->add('Message', TextareaType::class, [
+                'label' => 'Your Message',
                 'attr' => [
                     'rows' => 10,
                 ]
